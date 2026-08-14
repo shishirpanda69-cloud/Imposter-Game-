@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Who Is The Imposter?</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #080b14;
+    --card: #111827;
+    --card2: #182033;
+    --primary: #7c3aed;
+    --primary2: #9333ea;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at top,
+            #1e1b4b 0%,
+            #080b14 55%
+        );
+
+    color: var(--text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow-x: hidden;
+}
+
+#app {
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    width: 100%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    animation: fadeIn 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* LOGO */
+
+.logo {
+    font-size: 42px;
+    font-weight: 900;
+
+    margin-bottom: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #a78bfa,
+            #ec4899
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 35px;
+}
+
+/* CARDS */
+
+.card {
+    width: 100%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, 0.95),
+            rgba(15, 23, 42, 0.95)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,0.35);
+}
+
+label {
+    display: block;
+
+    text-align: left;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+}
+
+select,
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.1);
+
+    background: #0f172a;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+
+    margin-bottom: 18px;
+}
+
+select:focus,
+input:focus {
+    border-color:
+        var(--primary);
+}
+
+/* BUTTONS */
+
+button {
+    border: none;
+
+    border-radius: 13px;
+
+    padding: 15px 22px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    color: white;
+
+    transition:
+        transform 0.15s,
+        opacity 0.15s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.primary {
+    width: 100%;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+
+    margin-top: 5px;
+}
+
+.secondary {
+    background: #334155;
+}
+
+.danger {
+    background: var(--danger);
+}
+
+.success {
+    background: var(--success);
+}
+
+.warning {
+    background: var(--warning);
+}
+
+/* PLAYER COUNT */
+
+.playerCount {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.playerCount button {
+    width: 48px;
+    height: 48px;
+
+    padding: 0;
+
+    background: #1e293b;
+}
+
+.playerCount button.active {
+    background:
+        var(--primary);
+}
+
+/* SETUP */
+
+.settingsGroup {
+    margin-bottom: 10px;
+}
+
+/* ROLE SCREEN */
+
+.rolePlayer {
+    color: var(--muted);
+
+    font-size: 15px;
+
+    margin-bottom: 15px;
+}
+
+.roleCard {
+    width: 100%;
+
+    min-height: 260px;
+
+    border-radius: 24px;
+
+    padding: 35px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1e293b,
+            #0f172a
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.1);
+}
+
+.revealButton {
+    width: 100%;
+
+    margin-top: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #db2777
+        );
+}
+
+.secretWord {
+    font-size: 36px;
+
+    font-weight: 900;
+
+    margin: 15px 0;
+
+    color: #a78bfa;
+}
+
+.imposterTitle {
+    color: #f87171;
+
+    font-size: 30px;
+
+    font-weight: 900;
+}
+
+.imposterHint {
+    color: #fbbf24;
+
+    font-size: 20px;
+
+    margin-top: 15px;
+}
+
+.passMessage {
+    color: var(--muted);
+
+    font-size: 14px;
+
+    margin-top: 20px;
+}
+
+/* TURN SCREEN */
+
+.playerTurn {
+    font-size: 40px;
+
+    font-weight: 900;
+
+    margin-bottom: 10px;
+}
+
+.turnSub {
+    color: var(--muted);
+
+    margin-bottom: 30px;
+}
+
+/* TIMER */
+
+.timerCircle {
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    border:
+        8px solid
+        var(--primary);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    font-size: 50px;
+
+    font-weight: 900;
+}
+
+.timerDanger {
+    border-color:
+        var(--danger);
+
+    color:
+        #f87171;
+}
+
+/* CLUE */
+
+.clueBox {
+    width: 100%;
+
+    background:
+        #111827;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.clueBox h3 {
+    margin-bottom: 8px;
+}
+
+.clueBox p {
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+/* VOTING */
+
+.voteTitle {
+    font-size: 32px;
+
+    font-weight: 900;
+
+    margin-bottom: 10px;
+}
+
+.voteSubtitle {
+    color: var(--muted);
+
+    margin-bottom: 25px;
+}
+
+.voteList {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.voteButton {
+    width: 100%;
+
+    background:
+        #1e293b;
+
+    text-align: left;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.voteButton.selected {
+    background:
+        var(--primary);
+}
+
+/* RESULTS */
+
+.resultTitle {
+    font-size: 38px;
+
+    font-weight: 900;
+
+    margin-bottom: 15px;
+}
+
+.resultImposter {
+    font-size: 25px;
+
+    color: #f87171;
+
+    margin-bottom: 10px;
+}
+
+.resultWord {
+    font-size: 20px;
+
+    color: #a78bfa;
+
+    margin-bottom: 25px;
+}
+
+.resultBox {
+    width: 100%;
+
+    background:
+        #111827;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.resultBox p {
+    color: var(--muted);
+
+    margin: 8px 0;
+}
+
+/* SCORE */
+
+.scoreBoard {
+    display: flex;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin-bottom: 20px;
+}
+
+.scoreItem {
+    flex: 1;
+
+    background:
+        #111827;
+
+    border-radius: 12px;
+
+    padding: 12px;
+}
+
+.scoreItem strong {
+    display: block;
+
+    font-size: 20px;
+
+    color: #a78bfa;
+}
+
+.scoreItem span {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+/* FINAL GUESS */
+
+.guessTitle {
+    font-size: 32px;
+
+    font-weight: 900;
+
+    color: #f87171;
+
+    margin-bottom: 10px;
+}
+
+.guessText {
+    color: var(--muted);
+
+    margin-bottom: 25px;
+}
+
+/* CATEGORY BADGE */
+
+.badge {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 50px;
+
+    background:
+        rgba(124,58,237,0.2);
+
+    color:
+        #c4b5fd;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 500px) {
+
+    #app {
+        padding: 15px;
+    }
+
+    .logo {
+        font-size: 34px;
+    }
+
+    .secretWord {
+        font-size: 30px;
+    }
+
+    .playerTurn {
+        font-size: 32px;
+    }
+
+    .timerCircle {
+        width: 130px;
+        height: 130px;
+
+        font-size: 42px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+
+<!-- =====================================
+     SETUP SCREEN
+====================================== -->
+
+<section id="setupScreen" class="screen">
+
+    <div class="logo">
+        IMPOSTER
+    </div>
+
+    <p class="subtitle">
+        Who doesn't know the word?
+    </p>
+
+
+    <div class="card">
+
+        <div class="settingsGroup">
+
+            <label>
+                Number of Players
+            </label>
+
+            <div class="playerCount">
+
+                <button data-players="3">
+                    3
+                </button>
+
+                <button
+                    data-players="4"
+                    class="active"
+                >
+                    4
+                </button>
+
+                <button data-players="5">
+                    5
+                </button>
+
+                <button data-players="6">
+                    6
+                </button>
+
+                <button data-players="7">
+                    7
+                </button>
+
+                <button data-players="8">
+                    8
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <label>
+            Category
+        </label>
+
+        <select id="categorySelect">
+
+            <option value="random">
+                Random
+            </option>
+
+            <option value="nepal">
+                Nepal Vibes 🇳🇵
+            </option>
+
+            <option value="food">
+                Food
+            </option>
+
+            <option value="football">
+                Football
+            </option>
+
+            <option value="places">
+                Places
+            </option>
+
+            <option value="festivals">
+                Festivals
+            </option>
+
+            <option value="animals">
+                Animals
+            </option>
+
+        </select>
+
+
+        <label>
+            Clue Time
+        </label>
+
+        <select id="timerSelect">
+
+            <option value="30">
+                30 seconds
+            </option>
+
+            <option value="45" selected>
+                45 seconds
+            </option>
+
+            <option value="60">
+                60 seconds
+            </option>
+
+            <option value="90">
+                90 seconds
+            </option>
+
+        </select>
+
+
+        <button
+            id="startGameButton"
+            class="primary"
+        >
+            START GAME
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     ROLE SCREEN
+====================================== -->
+
+<section
+    id="roleScreen"
+    class="screen hidden"
+>
+
+    <div class="rolePlayer">
+        Player <span id="rolePlayerNumber">1</span>
+    </div>
+
+
+    <div class="roleCard">
+
+        <div id="roleContent">
+
+            <h2>
+                Ready?
+            </h2>
+
+            <p class="passMessage">
+                Make sure nobody else is looking.
+            </p>
+
+            <button
+                id="revealButton"
+                class="revealButton"
+            >
+                REVEAL MY ROLE
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     START PLAYER SCREEN
+====================================== -->
+
+<section
+    id="startPlayerScreen"
+    class="screen hidden"
+>
+
+    <div class="card">
+
+        <span class="badge">
+            CLUE ROUND
+        </span>
+
+        <h1>
+            Player <span id="startingPlayerNumber">1</span>
+            Starts!
+        </h1>
+
+        <p
+            style="
+            color:#94a3b8;
+            margin:15px 0 25px;
+            "
+        >
+            Give one clue related to the secret word.
+        </p>
+
+        <button
+            id="startCluesButton"
+            class="primary"
+        >
+            START CLUE ROUND
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     CLUE SCREEN
+====================================== -->
+
+<section
+    id="clueScreen"
+    class="screen hidden"
+>
+
+    <div class="playerTurn">
+
+        Player
+        <span id="currentPlayerNumber">
+            1
+        </span>
+
+    </div>
+
+    <p class="turnSub">
+        Give your clue now
+    </p>
+
+
+    <div
+        id="timerCircle"
+        class="timerCircle"
+    >
+        45
+    </div>
+
+
+    <div class="clueBox">
+
+        <h3>
+            Clue Rules
+        </h3>
+
+        <p>
+            Say ONE word or a very short clue.
+            Don't make the secret word too obvious.
+        </p>
+
+    </div>
+
+
+    <button
+        id="nextPlayerButton"
+        class="primary"
+    >
+        DONE • NEXT PLAYER
+    </button>
+
+</section>
+
+
+<!-- =====================================
+     VOTING SCREEN
+====================================== -->
+
+<section
+    id="votingScreen"
+    class="screen hidden"
+>
+
+    <div class="voteTitle">
+        WHO IS THE IMPOSTER?
+    </div>
+
+    <p class="voteSubtitle">
+        Discuss the clues and vote.
+    </p>
+
+
+    <div
+        id="voteList"
+        class="voteList"
+    ></div>
+
+
+    <button
+        id="confirmVoteButton"
+        class="primary"
+        style="margin-top:20px;"
+        disabled
+    >
+        CONFIRM VOTE
+    </button>
+
+</section>
+
+
+<!-- =====================================
+     RESULT SCREEN
+====================================== -->
+
+<section
+    id="resultScreen"
+    class="screen hidden"
+>
+
+    <div
+        id="resultTitle"
+        class="resultTitle"
+    >
+        RESULT
+    </div>
+
+
+    <div
+        id="resultImposter"
+        class="resultImposter"
+    ></div>
+
+
+    <div
+        id="resultWord"
+        class="resultWord"
+    ></div>
+
+
+    <div class="resultBox">
+
+        <p>
+            The group voted for:
+        </p>
+
+        <h2 id="votedPlayer">
+            Player 1
+        </h2>
+
+    </div>
+
+
+    <button
+        id="resultContinueButton"
+        class="primary"
+    >
+        CONTINUE
+    </button>
+
+</section>
+
+
+<!-- =====================================
+     IMPOSTER GUESS SCREEN
+====================================== -->
+
+<section
+    id="guessScreen"
+    class="screen hidden"
+>
+
+    <div class="guessTitle">
+        IMPOSTER CAUGHT!
+    </div>
+
+    <p class="guessText">
+        One final chance.
+        Guess the secret word to steal the win!
+    </p>
+
+
+    <div class="card">
+
+        <input
+            id="guessInput"
+            type="text"
+            placeholder="Enter your guess..."
+            autocomplete="off"
+        >
+
+        <button
+            id="guessButton"
+            class="primary"
+        >
+            GUESS WORD
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     FINAL SCREEN
+====================================== -->
+
+<section
+    id="finalScreen"
+    class="screen hidden"
+>
+
+    <div
+        id="finalTitle"
+        class="resultTitle"
+    >
+        GAME OVER
+    </div>
+
+
+    <div
+        id="finalMessage"
+        class="resultWord"
+    ></div>
+
+
+    <div
+        id="finalScores"
+        class="scoreBoard"
+    ></div>
+
+
+    <button
+        id="newRoundButton"
+        class="primary"
+    >
+        PLAY AGAIN
+    </button>
+
+</section>
+
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   WORD DATABASE
+========================================== */
+
+const WORDS = {
+
+    nepal: [
+
+        {
+            word: "राँगो",
+            hint: "Animal"
+        },
+
+        {
+            word: "भैंसी",
+            hint: "Animal"
+        },
+
+        {
+            word: "गाई",
+            hint: "Animal"
+        },
+
+        {
+            word: "बाख्रा",
+            hint: "Animal"
+        },
+
+        {
+            word: "मोमो",
+            hint: "Popular food"
+        },
+
+        {
+            word: "दाल भात",
+            hint: "Nepali food"
+        },
+
+        {
+            word: "सेल रोटी",
+            hint: "Nepali food"
+        },
+
+        {
+            word: "गुन्द्रुक",
+            hint: "Nepali food"
+        },
+
+        {
+            word: "ढिँडो",
+            hint: "Nepali food"
+        },
+
+        {
+            word: "दशैं",
+            hint: "Festival"
+        },
+
+        {
+            word: "तिहार",
+            hint: "Festival"
+        },
+
+        {
+            word: "देउसी",
+            hint: "Festival tradition"
+        },
+
+        {
+            word: "भैलो",
+            hint: "Festival tradition"
+        },
+
+        {
+            word: "पिङ",
+            hint: "Festival activity"
+        },
+
+        {
+            word: "काठमाडौं",
+            hint: "Nepali city"
+        },
+
+        {
+            word: "पोखरा",
+            hint: "Nepali city"
+        },
+
+        {
+            word: "चितवन",
+            hint: "Nepali place"
+        },
+
+        {
+            word: "मुस्ताङ",
+            hint: "Nepali place"
+        },
+
+        {
+            word: "लुम्बिनी",
+            hint: "Famous place"
+        },
+
+        {
+            word: "सगरमाथा",
+            hint: "Mountain"
+        },
+
+        {
+            word: "अन्नपूर्ण",
+            hint: "Mountain"
+        },
+
+        {
+            word: "पशुपतिनाथ",
+            hint: "Famous temple"
+        },
+
+        {
+            word: "स्वयम्भूनाथ",
+            hint: "Famous place"
+        },
+
+        {
+            word: "चिया",
+            hint: "Drink"
+        },
+
+        {
+            word: "लप्सी",
+            hint: "Nepali fruit"
+        }
+
+    ],
+
+
+    food: [
+
+        {
+            word: "मोमो",
+            hint: "Food"
+        },
+
+        {
+            word: "चाउमिन",
+            hint: "Food"
+        },
+
+        {
+            word: "पिज्जा",
+            hint: "Food"
+        },
+
+        {
+            word: "बर्गर",
+            hint: "Food"
+        },
+
+        {
+            word: "फ्रेन्च फ्राइज",
+            hint: "Fast food"
+        },
+
+        {
+            word: "सेल रोटी",
+            hint: "Nepali food"
+        },
+
+        {
+            word: "दाल भात",
+            hint: "Meal"
+        },
+
+        {
+            word: "बिरयानी",
+            hint: "Rice dish"
+        },
+
+        {
+            word: "थुक्पा",
+            hint: "Noodle dish"
+        },
+
+        {
+            word: "समोसा",
+            hint: "Snack"
+        },
+
+        {
+            word: "आइसक्रिम",
+            hint: "Dessert"
+        },
+
+        {
+            word: "चकलेट",
+            hint: "Sweet"
+        },
+
+        {
+            word: "केक",
+            hint: "Dessert"
+        }
+
+    ],
+
+
+    football: [
+
+        {
+            word: "Cristiano Ronaldo",
+            hint: "Portuguese footballer"
+        },
+
+        {
+            word: "Lionel Messi",
+            hint: "Argentine footballer"
+        },
+
+        {
+            word: "Neymar",
+            hint: "Brazilian footballer"
+        },
+
+        {
+            word: "Kylian Mbappé",
+            hint: "French footballer"
+        },
+
+        {
+            word: "Erling Haaland",
+            hint: "Norwegian footballer"
+        },
+
+        {
+            word: "Mohamed Salah",
+            hint: "Egyptian footballer"
+        },
+
+        {
+            word: "Vinícius Jr.",
+            hint: "Brazilian footballer"
+        },
+
+        {
+            word: "Jude Bellingham",
+            hint: "English footballer"
+        },
+
+        {
+            word: "Son Heung-min",
+            hint: "South Korean footballer"
+        },
+
+        {
+            word: "Robert Lewandowski",
+            hint: "Polish footballer"
+        },
+
+        {
+            word: "Luka Modrić",
+            hint: "Croatian footballer"
+        },
+
+        {
+            word: "Kevin De Bruyne",
+            hint: "Belgian footballer"
+        }
+
+    ],
+
+
+    places: [
+
+        {
+            word: "काठमाडौं",
+            hint: "City"
+        },
+
+        {
+            word: "पोखरा",
+            hint: "City"
+        },
+
+        {
+            word: "लुम्बिनी",
+            hint: "Famous place"
+        },
+
+        {
+            word: "सगरमाथा",
+            hint: "Mountain"
+        },
+
+        {
+            word: "चितवन",
+            hint: "Nepali place"
+        },
+
+        {
+            word: "मुस्ताङ",
+            hint: "Nepali place"
+        },
+
+        {
+            word: "Paris",
+            hint: "European city"
+        },
+
+        {
+            word: "London",
+            hint: "European city"
+        },
+
+        {
+            word: "Dubai",
+            hint: "City"
+        },
+
+        {
+            word: "New York",
+            hint: "American city"
+        }
+
+    ],
+
+
+    festivals: [
+
+        {
+            word: "दशैं",
+            hint: "Nepali festival"
+        },
+
+        {
+            word: "तिहार",
+            hint: "Nepali festival"
+        },
+
+        {
+            word: "होली",
+            hint: "Festival"
+        },
+
+        {
+            word: "तीज",
+            hint: "Nepali festival"
+        },
+
+        {
+            word: "जनै पूर्णिमा",
+            hint: "Nepali festival"
+        },
+
+        {
+            word: "Christmas",
+            hint: "Festival"
+        },
+
+        {
+            word: "Halloween",
+            hint: "Festival"
+        },
+
+        {
+            word: "Eid",
+            hint: "Festival"
+        }
+
+    ],
+
+
+    animals: [
+
+        {
+            word: "राँगो",
+            hint: "Animal"
+        },
+
+        {
+            word: "भैंसी",
+            hint: "Animal"
+        },
+
+        {
+            word: "गाई",
+            hint: "Animal"
+        },
+
+        {
+            word: "बाख्रा",
+            hint: "Animal"
+        },
+
+        {
+            word: "कुकुर",
+            hint: "Animal"
+        },
+
+        {
+            word: "बिरालो",
+            hint: "Animal"
+        },
+
+        {
+            word: "हात्ती",
+            hint: "Animal"
+        },
+
+        {
+            word: "बाघ",
+            hint: "Wild animal"
+        },
+
+        {
+            word: "सिंह",
+            hint: "Wild animal"
+        },
+
+        {
+            word: "जिराफ",
+            hint: "Animal"
+        },
+
+        {
+            word: "पाण्डा",
+            hint: "Animal"
+        }
+
+    ]
+
+};
+
+
+/* ==========================================
+   GAME VARIABLES
+========================================== */
+
+let playerCount = 4;
+
+let selectedCategory = "random";
+
+let clueTime = 45;
+
+let secretWord = "";
+
+let imposter = 0;
+
+let currentRolePlayer = 1;
+
+let startingPlayer = 1;
+
+let currentPlayer = 1;
+
+let selectedVote = null;
+
+let timer = 45;
+
+let timerInterval = null;
+
+let scores = [];
+
+
+/* ==========================================
+   SCREEN HELPER
+========================================== */
+
+const screens = [
+
+    "setupScreen",
+
+    "roleScreen",
+
+    "startPlayerScreen",
+
+    "clueScreen",
+
+    "votingScreen",
+
+    "resultScreen",
+
+    "guessScreen",
+
+    "finalScreen"
+
+];
+
+
+function showScreen(id) {
+
+    screens.forEach(
+        screen => {
+
+            document
+                .getElementById(screen)
+                .classList.add("hidden");
+        }
+    );
+
+    document
+        .getElementById(id)
+        .classList.remove("hidden");
+}
+
+
+/* ==========================================
+   PLAYER COUNT
+========================================== */
+
+document
+    .querySelectorAll(
+        "[data-players]"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        "[data-players]"
+                    )
+                    .forEach(
+                        b =>
+                            b.classList.remove(
+                                "active"
+                            )
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                playerCount =
+                    Number(
+                        button.dataset.players
+                    );
+            }
+        );
+    });
+
+
+/* ==========================================
+   START GAME
+========================================== */
+
+document
+    .getElementById(
+        "startGameButton"
+    )
+    .addEventListener(
+        "click",
+        startNewGame
+    );
+
+
+function startNewGame() {
+
+    selectedCategory =
+        document
+            .getElementById(
+                "categorySelect"
+            )
+            .value;
+
+
+    clueTime =
+        Number(
+            document
+                .getElementById(
+                    "timerSelect"
+                )
+                .value
+        );
+
+
+    scores =
+        Array(playerCount).fill(0);
+
+
+    setupRound();
+
+}
+
+
+/* ==========================================
+   SETUP ROUND
+========================================== */
+
+function setupRound() {
+
+    let category =
+        selectedCategory;
+
+
+    if (
+        category === "random"
+    ) {
+
+        const categories =
+            Object.keys(WORDS);
+
+        category =
+            categories[
+                Math.floor(
+                    Math.random() *
+                    categories.length
+                )
+            ];
+    }
+
+
+    const wordList =
+        WORDS[category];
+
+
+    const selected =
+        wordList[
+            Math.floor(
+                Math.random() *
+                wordList.length
+            )
+        ];
+
+
+    secretWord =
+        selected.word;
+
+
+    window.currentHint =
+        selected.hint;
+
+
+    /* RANDOM IMPOSTER */
+
+    imposter =
+        Math.floor(
+            Math.random() *
+            playerCount
+        ) + 1;
+
+
+    /* RANDOM STARTER */
+
+    startingPlayer =
+        Math.floor(
+            Math.random() *
+            playerCount
+        ) + 1;
+
+
+    currentRolePlayer = 1;
+
+
+    currentPlayer =
+        startingPlayer;
+
+
+    selectedVote = null;
+
+
+    showRoleScreen();
+
+}
+
+
+/* ==========================================
+   ROLE SCREEN
+========================================== */
+
+function showRoleScreen() {
+
+    showScreen(
+        "roleScreen"
+    );
+
+
+    document
+        .getElementById(
+            "rolePlayerNumber"
+        )
+        .textContent =
+        currentRolePlayer;
+
+
+    document
+        .getElementById(
+            "roleContent"
+        )
+        .innerHTML = `
+
+            <h2>
+                Ready?
+            </h2>
+
+            <p class="passMessage">
+                Make sure nobody else is looking.
+            </p>
+
+            <button
+                id="revealButton"
+                class="revealButton"
+            >
+                REVEAL MY ROLE
+            </button>
+
+        `;
+
+
+    document
+        .getElementById(
+            "revealButton"
+        )
+        .addEventListener(
+            "click",
+            revealRole
+        );
+}
+
+
+/* ==========================================
+   REVEAL ROLE
+========================================== */
+
+function revealRole() {
+
+    const content =
+        document.getElementById(
+            "roleContent"
+        );
+
+
+    if (
+        currentRolePlayer ===
+        imposter
+    ) {
+
+        content.innerHTML = `
+
+            <div class="imposterTitle">
+                YOU ARE THE IMPOSTER
+            </div>
+
+            <div class="imposterHint">
+                Hint: ${window.currentHint}
+            </div>
+
+            <p class="passMessage">
+                Don't let anyone know.
+            </p>
+
+            <button
+                id="hideRoleButton"
+                class="revealButton"
+            >
+                HIDE & PASS
+            </button>
+
+        `;
+
+    } else {
+
+        content.innerHTML = `
+
+            <div>
+                YOUR WORD
+            </div>
+
+            <div class="secretWord">
+                ${secretWord}
+            </div>
+
+            <p class="passMessage">
+                Remember the word.
+                Don't show anyone.
+            </p>
+
+            <button
+                id="hideRoleButton"
+                class="revealButton"
+            >
+                HIDE & PASS
+            </button>
+
+        `;
+    }
+
+
+    document
+        .getElementById(
+            "hideRoleButton"
+        )
+        .addEventListener(
+            "click",
+            nextRole
+        );
+}
+
+
+/* ==========================================
+   NEXT ROLE
+========================================== */
+
+function nextRole() {
+
+    currentRolePlayer++;
+
+
+    if (
+        currentRolePlayer <=
+        playerCount
+    ) {
+
+        showRoleScreen();
+
+    } else {
+
+        showStartingPlayer();
+
+    }
+}
+
+
+/* ==========================================
+   STARTING PLAYER
+========================================== */
+
+function showStartingPlayer() {
+
+    showScreen(
+        "startPlayerScreen"
+    );
+
+
+    document
+        .getElementById(
+            "startingPlayerNumber"
+        )
+        .textContent =
+        startingPlayer;
+}
+
+
+/* ==========================================
+   START CLUES
+========================================== */
+
+document
+    .getElementById(
+        "startCluesButton"
+    )
+    .addEventListener(
+        "click",
+        startClueRound
+    );
+
+
+function startClueRound() {
+
+    currentPlayer =
+        startingPlayer;
+
+    showClueScreen();
+
+}
+
+
+/* ==========================================
+   CLUE SCREEN
+========================================== */
+
+function showClueScreen() {
+
+    showScreen(
+        "clueScreen"
+    );
+
+
+    document
+        .getElementById(
+            "currentPlayerNumber"
+        )
+        .textContent =
+        currentPlayer;
+
+
+    startTimer();
+
+}
+
+
+/* ==========================================
+   TIMER
+========================================== */
+
+function startTimer() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timer =
+        clueTime;
+
+
+    const timerCircle =
+        document.getElementById(
+            "timerCircle"
+        );
+
+
+    timerCircle.textContent =
+        timer;
+
+
+    timerCircle.classList.remove(
+        "timerDanger"
+    );
+
+
+    timerInterval =
+        setInterval(
+            () => {
+
+                timer--;
+
+                timerCircle.textContent =
+                    timer;
+
+
+                if (
+                    timer <= 10
+                ) {
+
+                    timerCircle.classList.add(
+                        "timerDanger"
+                    );
+                }
+
+
+                if (
+                    timer <= 0
+                ) {
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    nextPlayer();
+                }
+
+            },
+            1000
+        );
+}
+
+
+/* ==========================================
+   NEXT PLAYER
+========================================== */
+
+document
+    .getElementById(
+        "nextPlayerButton"
+    )
+    .addEventListener(
+        "click",
+        nextPlayer
+    );
+
+
+function nextPlayer() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    if (
+        currentPlayer <
+        playerCount
+    ) {
+
+        currentPlayer++;
+
+        showClueScreen();
+
+    } else {
+
+        showVoting();
+    }
+}
+
+
+/* ==========================================
+   VOTING
+========================================== */
+
+function showVoting() {
+
+    showScreen(
+        "votingScreen"
+    );
+
+
+    selectedVote = null;
+
+
+    const voteList =
+        document.getElementById(
+            "voteList"
+        );
+
+
+    voteList.innerHTML = "";
+
+
+    for (
+        let i = 1;
+        i <= playerCount;
+        i++
+    ) {
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.className =
+            "voteButton";
+
+
+        button.innerHTML = `
+
+            <span>
+                Player ${i}
+            </span>
+
+            <span>
+                →
+            </span>
+
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedVote = i;
+
+
+                document
+                    .querySelectorAll(
+                        ".voteButton"
+                    )
+                    .forEach(
+                        b =>
+                            b.classList.remove(
+                                "selected"
+                            )
+                    );
+
+
+                button.classList.add(
+                    "selected"
+                );
+
+
+                document
+                    .getElementById(
+                        "confirmVoteButton"
+                    )
+                    .disabled =
+                    false;
+            }
+        );
+
+
+        voteList.appendChild(
+            button
+        );
+    }
+}
+
+
+/* ==========================================
+   CONFIRM VOTE
+========================================== */
+
+document
+    .getElementById(
+        "confirmVoteButton"
+    )
+    .addEventListener(
+        "click",
+        showResult
+    );
+
+
+function showResult() {
+
+    document
+        .getElementById(
+            "votedPlayer"
+        )
+        .textContent =
+        `Player ${selectedVote}`;
+
+
+    document
+        .getElementById(
+            "resultImposter"
+        )
+        .textContent =
+        `The Imposter was Player ${imposter}`;
+
+
+    document
+        .getElementById(
+            "resultWord"
+        )
+        .textContent =
+        `Secret Word: ${secretWord}`;
+
+
+    const title =
+        document.getElementById(
+            "resultTitle"
+        );
+
+
+    if (
+        selectedVote ===
+        imposter
+    ) {
+
+        title.textContent =
+            "IMPOSTER CAUGHT!";
+
+    } else {
+
+        title.textContent =
+            "IMPOSTER ESCAPED!";
+    }
+
+
+    showScreen(
+        "resultScreen"
+    );
+}
+
+
+/* ==========================================
+   RESULT CONTINUE
+========================================== */
+
+document
+    .getElementById(
+        "resultContinueButton"
+    )
+    .addEventListener(
+        "click",
+        continueAfterVote
+    );
+
+
+function continueAfterVote() {
+
+    if (
+        selectedVote ===
+        imposter
+    ) {
+
+        showScreen(
+            "guessScreen"
+        );
+
+        document
+            .getElementById(
+                "guessInput"
+            )
+            .value = "";
+
+        document
+            .getElementById(
+                "guessInput"
+            )
+            .focus();
+
+    } else {
+
+        finishGame(
+            "Imposter wins!"
+        );
+    }
+}
+
+
+/* ==========================================
+   IMPOSTER GUESS
+========================================== */
+
+document
+    .getElementById(
+        "guessButton"
+    )
+    .addEventListener(
+        "click",
+        checkGuess
+    );
+
+
+function checkGuess() {
+
+    const guess =
+        document
+            .getElementById(
+                "guessInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    if (!guess) {
+        return;
+    }
+
+
+    const answer =
+        secretWord
+            .toLowerCase();
+
+
+    if (
+        guess === answer
+    ) {
+
+        finishGame(
+            "The Imposter guessed the word and wins!"
+        );
+
+    } else {
+
+        finishGame(
+            "The Imposter guessed wrong. Players win!"
+        );
+    }
+}
+
+
+/* ==========================================
+   FINISH GAME
+========================================== */
+
+function finishGame(message) {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document
+        .getElementById(
+            "finalTitle"
+        )
+        .textContent =
+        "ROUND OVER";
+
+
+    document
+        .getElementById(
+            "finalMessage"
+        )
+        .textContent =
+        message;
+
+
+    const scoresContainer =
+        document.getElementById(
+            "finalScores"
+        );
+
+
+    scoresContainer.innerHTML = "";
+
+
+    for (
+        let i = 0;
+        i < playerCount;
+        i++
+    ) {
+
+        const item =
+            document.createElement(
+                "div"
+            );
+
+
+        item.className =
+            "scoreItem";
+
+
+        item.innerHTML = `
+
+            <strong>
+                ${scores[i]}
+            </strong>
+
+            <span>
+                Player ${i + 1}
+            </span>
+
+        `;
+
+
+        scoresContainer.appendChild(
+            item
+        );
+    }
+
+
+    showScreen(
+        "finalScreen"
+    );
+}
+
+
+/* ==========================================
+   PLAY AGAIN
+========================================== */
+
+document
+    .getElementById(
+        "newRoundButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            setupRound();
+
+        }
+    );
+
+
+</script>
+
+</body>
+</html>
